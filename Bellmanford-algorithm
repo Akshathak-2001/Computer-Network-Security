@@ -1,0 +1,49 @@
+package bellmanford;
+import java.util.*;
+public class Bellmanford {
+	
+	static int n,dest;
+	static double[] distancevector,prevdistancevector;
+	static double[][] adjmatrix;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter number of nodes: ");
+		n = sc.nextInt();
+		adjmatrix = new double[n][n];
+		System.out.println("Enter adjacency matrix(use infinity for no link)");
+		for(int i =0;i<n;i++) {
+			for(int j=0;j<n;j++) {
+				adjmatrix[i][j] = sc.nextDouble();
+			}
+		}
+		System.out.println("Enter destination vertex: ");
+		dest = sc.nextInt();
+		distancevector = new double[n];
+		for(int i=0;i<n;i++) {
+			distancevector[i]= 999;
+			distancevector[dest-1]= 0;
+		}
+		bellmanFordAlgo();
+		System.out.println("Distance vector: ");
+		for(int i =0;i<n;i++) {
+			if(i == dest-1)
+				continue;
+			System.out.println("Distance from "+(i+1)+" is "+distancevector[i]);
+		}
+		System.out.println();
+	}
+	static void bellmanFordAlgo() {
+		for(int i =0;i<n-1;i++) {
+			prevdistancevector = distancevector.clone();
+			for(int j=0;j<n;j++) {
+				double min = 999;
+				for(int k=0;k<n;k++) {
+					if(min>adjmatrix[j][k]+prevdistancevector[k]) {
+						min = adjmatrix[j][k] + prevdistancevector[k];
+					}
+				}
+				distancevector[j]=min;
+			}
+		}
+	}
+}
